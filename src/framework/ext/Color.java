@@ -1,4 +1,6 @@
-package framework.ext.math;
+package framework.ext;
+
+import framework.ext.math.Tuple;
 
 /**
  * This class represents a simple RGB color.
