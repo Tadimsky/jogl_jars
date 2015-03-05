@@ -43,6 +43,7 @@ public class Camera {
     public void rotate(float angle, Vector axis) {
         // Axis-Angle rotation: http://www.gametutorials.com/tutorial/camera-part2-2/
         Vector viewDir = getViewVector();
+        viewDir.normalize();
         
         float radAngle = (float)(angle * Math.PI / 180.0f);
         
@@ -66,31 +67,28 @@ public class Camera {
         myLookAt = myPosition.add(newLookAt);
     }
     
-    private Vector getViewVector() {
-        return myLookAt.sub(myPosition);
+    public Vector getViewVector() {
+        return myLookAt.sub(myPosition).normalize();
     }
 
-    public Point getPosition() {
-        return myPosition;
+    public Vector getPitchVector() {
+        Vector v = getViewVector();
+        v = v.cross(myUp).normalize();
+        return v;
     }
 
-    public void setPosition(Point position) {
-        myPosition = new Point(position);
-    }
+    /**
+     * Moves a certain distance in the direction that the camera is facing.
+     * @param distance The distance to move.
+     */
+    public void move(float distance) {
+        Vector direction = getViewVector();
+        myPosition.x += direction.x * distance;
+        myPosition.y += direction.y * distance;
+        myPosition.z += direction.z * distance;
 
-    public Point getLookAt() {
-        return myLookAt;
-    }
-
-    public void setLookAt(Point lookAt) {
-        myLookAt = new Point(lookAt);
-    }
-
-    public Vector getUp() {
-        return myUp;
-    }
-
-    public void setUp(Vector up) {
-        myUp = new Vector(up);
+        myLookAt.x += direction.x * distance;
+        myLookAt.y += direction.y * distance;
+        myLookAt.z += direction.z * distance;
     }
 }
