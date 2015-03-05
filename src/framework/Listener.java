@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.nio.IntBuffer;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -49,7 +51,6 @@ public class Listener implements GLEventListener, KeyListener, MouseListener, Mo
     // cache creation of these objects
     private static GLU glu = new GLU();
     private static GLUT glut = new GLUT();
-
 
     /**
      * Create this listener with the arguments given on the command-line and the animation thread.
