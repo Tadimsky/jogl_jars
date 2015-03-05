@@ -7,6 +7,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import com.jogamp.opengl.util.gl2.GLUT;
+import framework.ext.input.KeyMap;
 
 
 /**
@@ -20,7 +21,8 @@ public abstract class Scene {
     // title of the scene
     private String myTitle = "";
     private Dimension mySize = new Dimension();
-
+    
+    private KeyMap myKeyMap;
 
     /**
      * Create scene with the given title.
@@ -207,5 +209,17 @@ public abstract class Scene {
      */
     void setWindowSize (int width, int height) {
         mySize.setSize(width, height);
+    }
+
+    /**
+     * Sets this KeyMap to the one used in the Listener code.
+     * @param keys
+     */
+    public void setKeyMap(KeyMap keys) {
+        myKeyMap = keys;        
+    }
+    
+    protected KeyMap getKeyMap() {
+        return myKeyMap;
     }
 }
