@@ -32,7 +32,7 @@ public class Ray {
      * This constructor simply calls the explicit constructor with the necessary fields from the
      * input as parameters.
      *
-     * @param newRay The ray to copy.
+     * @param other The ray to copy.
      */
     public Ray (Ray other) {
         this(other.getOrigin(), other.getDirection());
