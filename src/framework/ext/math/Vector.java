@@ -153,5 +153,10 @@ public class Vector extends Tuple {
         double sin = Math.sin(radians);
         
         Vector cross = axis.cross(toRotate);
+        return null;
     }
+    
+    public static final Vector X_AXIS = new Vector(1, 0, 0);
+    public static final Vector Y_AXIS = new Vector(0, 1, 0);
+    public static final Vector Z_AXIS = new Vector(0, 0, 1);
 }
