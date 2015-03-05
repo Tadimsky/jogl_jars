@@ -9,6 +9,7 @@ import javax.media.opengl.awt.GLJPanel;
 import javax.swing.JFrame;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
+import framework.ext.input.KeyMap;
 
 
 /**
@@ -22,6 +23,8 @@ import com.jogamp.opengl.util.FPSAnimator;
 public class JOGLFrame extends JFrame {
     public static final Dimension DEFAULT_SIZE = new Dimension(600, 600);
     public static final int FPS = 25;
+    
+    private KeyMap myKeyMap;
 
     public JOGLFrame (Scene scene) {
         this(scene, DEFAULT_SIZE);
@@ -38,6 +41,11 @@ public class JOGLFrame extends JFrame {
         // manage OpenGL canvas
         canvas.addGLEventListener(listener);
         canvas.addKeyListener(listener);
+        
+        myKeyMap = new KeyMap();
+        canvas.addKeyListener(myKeyMap);
+        scene.setKeyMap(myKeyMap);
+        
         canvas.addMouseListener(listener);
         canvas.addMouseMotionListener(listener);
         canvas.setPreferredSize(size);
