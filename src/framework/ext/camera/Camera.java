@@ -18,7 +18,11 @@ public class Camera {
     private float myYRotation;
 
     public Camera() {
-        this(new Point(0, 1, 40), new Point(0, 0, 0), new Vector(0, 1, 0));        
+        this(new Point(0, 1, 40), new Point(0, 1, 41), Vector.Y_AXIS);
+    }
+    
+    public Camera(Point position){
+        this(position, position.add(new Vector(0, 0, 1)), Vector.Y_AXIS);
     }
     
     public Camera(Point position, Point lookAt, Vector up) {
@@ -34,27 +38,59 @@ public class Camera {
                 myLookAt.x, myLookAt.y, myLookAt.z,
                 myUp.x, myUp.y, myUp.z);
         
-        gl.glMatrixRotatedEXT();
+    }
+    
+    public void rotate(float angle, Vector axis) {
+        // Axis-Angle rotation: http://www.gametutorials.com/tutorial/camera-part2-2/
+        Vector viewDir = getViewVector();
+        
+        float radAngle = (float)(angle * Math.PI / 180.0f);
+        
+        float cos = (float)Math.cos(radAngle);
+        float sin = (float)Math.sin(radAngle);
+        
+        Vector newLookAt = new Vector();
+        
+        newLookAt.x = (cos + (1 - cos) * (axis.x  * axis.x)) * viewDir.x;
+        newLookAt.x += (((1 - cos) * axis.x  * axis.y) - (axis.z * sin)) * viewDir.y;
+        newLookAt.x += (((1 - cos) * axis.x  * axis.z) + (axis.y * sin)) * viewDir.z;
 
-        gl.glRotatef(myYRotation, 1f, 0f, 0f);
-        gl.glRotatef(myXRotation, 0f, 1f, 0f);
+        newLookAt.y = (((1 - cos) * axis.x  * axis.y) + (axis.z * sin)) * viewDir.x;
+        newLookAt.y += (cos + ((1 - cos) * axis.y * axis.y)) * viewDir.y;
+        newLookAt.y += (((1 - cos) * axis.y  * axis.z) - (axis.x * sin)) * viewDir.z;
+
+        newLookAt.z = (((1 - cos) * axis.x  * axis.z) - (axis.y * sin)) * viewDir.x;
+        newLookAt.z += ((1 - cos) * axis.y  * axis.z) + (axis.x * sin) * viewDir.y;
+        newLookAt.z += (cos + ((1 - cos) * axis.z * axis.z)) * viewDir.z;
+        
+        myLookAt = myPosition.add(newLookAt);
+    }
+    
+    private Vector getViewVector() {
+        return myLookAt.sub(myPosition);
     }
 
-    public void turn(float xDegrees, float yDegrees) {
-        myXRotation += xDegrees;
-        myYRotation += yDegrees;
+    public Point getPosition() {
+        return myPosition;
     }
 
-    public void moveForward(float amnt) {
-        myPosition[2] -= amnt;
+    public void setPosition(Point position) {
+        myPosition = new Point(position);
     }
 
-    public void pan(float x, float y) {
-        myPosition[0] += x;
-        myPosition[1] += y;
-
-        myLookAt[0] += x;
-        myLookAt[1] += y;
+    public Point getLookAt() {
+        return myLookAt;
     }
 
+    public void setLookAt(Point lookAt) {
+        myLookAt = new Point(lookAt);
+    }
+
+    public Vector getUp() {
+        return myUp;
+    }
+
+    public void setUp(Vector up) {
+        myUp = new Vector(up);
+    }
 }
