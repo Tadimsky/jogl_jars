@@ -145,4 +145,13 @@ public class Vector extends Tuple {
         z *= factor;
         return this;
     }
+    
+    public static Vector rotateAboutAxis(Vector toRotate, double angle, Vector axis) {
+        double radians = (Math.PI * angle) / 180.0;
+        
+        double cos = Math.cos(radians);
+        double sin = Math.sin(radians);
+        
+        Vector cross = axis.cross(toRotate);
+    }
 }
