@@ -52,7 +52,7 @@ public class Color extends Tuple {
     /**
      * Add a scalar multiple of the other vector to this Vector
      */
-    public Color scale (double factor) {
+    public Color scale(double factor) {
         x *= factor;
         y *= factor;
         z *= factor;

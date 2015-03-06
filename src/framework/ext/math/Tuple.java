@@ -53,6 +53,12 @@ public class Tuple {
         y = inY;
         z = inZ;
     }
+    
+    public void multiply(double scale) {
+        x = x * scale;
+        y = y * scale;
+        z = z * scale;
+    }
 
     /**
      * @see Object#toString()
