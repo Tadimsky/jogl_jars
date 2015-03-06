@@ -139,7 +139,7 @@ public class Vector extends Tuple {
     /**
      * Add a scalar multiple of the other vector to this Vector
      */
-    public Vector scale (double factor) {
+    public Vector scale(double factor) {
         x *= factor;
         y *= factor;
         z *= factor;
