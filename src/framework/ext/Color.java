@@ -34,7 +34,7 @@ public class Color extends Tuple {
      * @param newG The new green value.
      * @param newB The new blue value.
      */
-    public Color (double newR, double newG, double newB) {
+    public Color (float newR, float newG, float newB) {
         super(newR, newG, newB);
     }
 
@@ -52,7 +52,7 @@ public class Color extends Tuple {
     /**
      * Add a scalar multiple of the other vector to this Vector
      */
-    public Color scale(double factor) {
+    public Color scale(float factor) {
         x *= factor;
         y *= factor;
         z *= factor;
@@ -72,7 +72,7 @@ public class Color extends Tuple {
     /**
      * Add a scalar multiple of the other color to this Color
      */
-    public Color scaleAdd (double scale, Color other) {
+    public Color scaleAdd (float scale, Color other) {
         x += scale * other.x;
         y += scale * other.y;
         z += scale * other.z;
@@ -85,7 +85,7 @@ public class Color extends Tuple {
      * @param min the minimum value
      * @param max the maximum value
      */
-    public Color clamp (double min, double max) {
+    public Color clamp (float min, float max) {
         x = Math.max(Math.min(x, max), min);
         y = Math.max(Math.min(y, max), min);
         z = Math.max(Math.min(z, max), min);

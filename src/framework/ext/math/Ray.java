@@ -56,7 +56,7 @@ public class Ray {
      * @param t The distance along the ray.
      * @return The location in space at that distance along the ray.
      */
-    public Point evaluate (double t) {
+    public Point evaluate (float t) {
         return new Point(start).scaleAdd(t, direction);
     }
 

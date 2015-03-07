@@ -24,25 +24,25 @@ public class Point extends Tuple {
     /**
      * Explicit constructor.
      */
-    public Point (double newX, double newY, double newZ) {
+    public Point (float newX, float newY, float newZ) {
         super(newX, newY, newZ);
     }
 
     /**
      * Returns the squared distance from this Point to other
      */
-    public double distanceSquared (Point other) {
-        double dx = (x - other.x);
-        double dy = (y - other.y);
-        double dz = (z - other.z);
+    public float distanceSquared (Point other) {
+        float dx = (x - other.x);
+        float dy = (y - other.y);
+        float dz = (z - other.z);
         return dx * dx + dy * dy + dz * dz;
     }
 
     /**
      * Returns the distance from this Point to other
      */
-    public double distance (Point other) {
-        return Math.sqrt(distanceSquared(other));
+    public float distance (Point other) {
+        return (float)Math.sqrt(distanceSquared(other));
     }
 
     /**
@@ -89,7 +89,7 @@ public class Point extends Tuple {
     /**
      * Move the point by the given vector scaled by the given factor
      */
-    public Point scaleAdd (double scale, Vector vector) {
+    public Point scaleAdd (float scale, Vector vector) {
         x += scale * vector.x;
         y += scale * vector.y;
         z += scale * vector.z;

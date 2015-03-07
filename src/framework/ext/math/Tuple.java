@@ -7,11 +7,11 @@ package framework.ext.math;
  */
 public class Tuple {
     /** The x coordinate of the Tuple3. */
-    public double x;
+    public float x;
     /** The y coordinate of the Tuple3. */
-    public double y;
+    public float y;
     /** The z coordinate of the Tuple3. */
-    public double z;
+    public float z;
 
     /**
      * Default constructor.
@@ -30,7 +30,7 @@ public class Tuple {
     /**
      * Explicit constructor.
      */
-    public Tuple (double newX, double newY, double newZ) {
+    public Tuple (float newX, float newY, float newZ) {
         x = newX;
         y = newY;
         z = newZ;
@@ -48,13 +48,13 @@ public class Tuple {
     /**
      * Set the value of this Tuple3 to the three input values
      */
-    public void set (double inX, double inY, double inZ) {
+    public void set (float inX, float inY, float inZ) {
         x = inX;
         y = inY;
         z = inZ;
     }
     
-    public void multiply(double scale) {
+    public void multiply(float scale) {
         x = x * scale;
         y = y * scale;
         z = z * scale;
@@ -66,5 +66,27 @@ public class Tuple {
     @Override
     public String toString () {
         return "[" + x + "," + y + "," + z + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tuple tuple = (Tuple) o;
+
+        if (Float.compare(tuple.x, x) != 0) return false;
+        if (Float.compare(tuple.y, y) != 0) return false;
+        if (Float.compare(tuple.z, z) != 0) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (x != +0.0f ? Float.floatToIntBits(x) : 0);
+        result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
+        result = 31 * result + (z != +0.0f ? Float.floatToIntBits(z) : 0);
+        return result;
     }
 }

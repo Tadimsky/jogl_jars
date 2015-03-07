@@ -23,7 +23,7 @@ public class Vector extends Tuple {
     /**
      * The explicit constructor.
      */
-    public Vector (double newX, double newY, double newZ) {
+    public Vector (float newX, float newY, float newZ) {
         super(newX, newY, newZ);
     }
 
@@ -49,22 +49,22 @@ public class Vector extends Tuple {
     /**
      * Returns the dot product of this Vector and the other.
      */
-    public double dot (Vector other) {
+    public float dot (Vector other) {
         return x * other.x + y * other.y + z * other.z;
     }
 
     /**
      * Returns the length squared of this vector.
      */
-    public double lengthSquared () {
+    public float lengthSquared () {
         return x * x + y * y + z * z;
     }
 
     /**
      * Returns length of this vector.
      */
-    public double length () {
-        return Math.sqrt(lengthSquared());
+    public float length () {
+        return (float)Math.sqrt(lengthSquared());
     }
 
     /**
@@ -73,7 +73,7 @@ public class Vector extends Tuple {
      * If the length of the Vector is 0, no action is taken.
      */
     public Vector normalize () {
-        double dist = length();
+        float dist = length();
         if (dist != 0) {
             x /= dist;
             y /= dist;
@@ -129,7 +129,7 @@ public class Vector extends Tuple {
     /**
      * Add a scalar multiple of the other vector to this Vector
      */
-    public Vector scaleAdd (double scale, Vector vector) {
+    public Vector scaleAdd (float scale, Vector vector) {
         x += scale * vector.x;
         y += scale * vector.y;
         z += scale * vector.z;
@@ -139,14 +139,14 @@ public class Vector extends Tuple {
     /**
      * Add a scalar multiple of the other vector to this Vector
      */
-    public Vector scale(double factor) {
+    public Vector scale(float factor) {
         x *= factor;
         y *= factor;
         z *= factor;
         return this;
     }
     
-    public static Vector rotateAboutAxis(Vector toRotate, double angle, Vector axis) {
+    public static Vector rotateAboutAxis(Vector toRotate, float angle, Vector axis) {
         double radians = (Math.PI * angle) / 180.0;
         
         double cos = Math.cos(radians);
