@@ -69,8 +69,8 @@ public class SkyBox extends  VisualComponent {
         drawFaceFB(gl, myTextures[RIGHT], new Vertex(x + width,y,z + length), new Vertex(x + width, y+ height, z+length),
                 new Vertex(x + width, y + height, z), new Vertex(x + width,y,z));
 
-        drawFaceFB(gl, myTextures[UP], new Vertex(x + width,y + height,z), new Vertex(x + width, y+ height, z+length),
-                new Vertex(x, y + height, z + length), new Vertex(x,y + height,z));
+        drawFaceFB(gl, myTextures[UP], new Vertex(x, y + height, z + length), new Vertex(x,y + height,z), 
+                new Vertex(x + width,y + height,z), new Vertex(x + width, y+ height, z+length));
 
         drawFaceFB(gl, myTextures[DOWN],
                 new Vertex(x, y, z), new Vertex(x, y, z+length), new Vertex(x + width, y, z + length), new Vertex(x + width,y,z));
