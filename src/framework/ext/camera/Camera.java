@@ -91,4 +91,8 @@ public class Camera {
         myLookAt.y += direction.y * distance;
         myLookAt.z += direction.z * distance;
     }
+    
+    public Point getPosition() {
+        return myPosition;
+    }
 }
