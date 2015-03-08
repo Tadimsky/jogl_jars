@@ -26,7 +26,14 @@ public class Tuple {
     public Tuple (Tuple newTuple) {
         this(newTuple.x, newTuple.y, newTuple.z);
     }
-
+    
+    public Tuple(float[] vals) {
+        assert vals.length == 3;
+        x = vals[0];
+        y = vals[1];
+        z = vals[2];
+    }
+    
     /**
      * Explicit constructor.
      */

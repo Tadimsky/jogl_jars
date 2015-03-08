@@ -21,6 +21,10 @@ public class Point extends Tuple {
         super(newTuple.x, newTuple.y, newTuple.z);
     }
 
+    public Point (float[] vals) {
+        super(vals);
+    }
+
     /**
      * Explicit constructor.
      */
