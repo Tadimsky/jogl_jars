@@ -14,8 +14,7 @@ public class Camera {
     private Point myLookAt;
     private Vector myUp;
 
-    private float myXRotation;
-    private float myYRotation;
+    private float myRollAmount;
 
     public Camera() {
         this(new Point(0, 1, 40), new Point(0, 1, 41), Vector.Y_AXIS);
@@ -37,7 +36,6 @@ public class Camera {
         glu.gluLookAt(myPosition.x, myPosition.y, myPosition.z,
                 myLookAt.x, myLookAt.y, myLookAt.z,
                 myUp.x, myUp.y, myUp.z);
-        
     }
     
     public void rotate(float angle, Vector axis) {
@@ -65,6 +63,18 @@ public class Camera {
         newLookAt.z += (cos + ((1 - cos) * axis.z * axis.z)) * viewDir.z;
         
         myLookAt = myPosition.add(newLookAt);
+    }
+    
+    public void yaw(float angle) {
+        rotate(angle, myUp);        
+    }
+
+    public void roll(float angle) {
+        //rotate(angle, getViewVector());
+    }
+
+    public void pitch(float angle) {
+        rotate(angle, getPitchVector());
     }
     
     public Vector getViewVector() {
