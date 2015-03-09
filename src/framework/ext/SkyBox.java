@@ -55,8 +55,9 @@ public class SkyBox extends  VisualComponent {
         float length = mySize;
 
         // draw cube
+        gl.glDisable(GL2.GL_LIGHTING);
         gl.glDepthMask(false);
-        gl.glNormal3f(0,1,0);
+        gl.glNormal3f(0, 1, 0);
         drawFaceFB(gl, myTextures[FRONT], new Vertex(x, y, z + length), new Vertex(x, y + height, z + length),
                 new Vertex(x + width, y + height, z + length), new Vertex(x + width, y, z + length));
         
@@ -76,6 +77,7 @@ public class SkyBox extends  VisualComponent {
                 new Vertex(x, y, z), new Vertex(x, y, z+length), new Vertex(x + width, y, z + length), new Vertex(x + width,y,z));
 
         gl.glDepthMask(true);
+        gl.glEnable(GL2.GL_LIGHTING);
     }
 
     private void drawFaceFB(GL2 gl, Texture t, Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
