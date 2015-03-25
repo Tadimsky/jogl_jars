@@ -121,7 +121,9 @@ public class Listener implements GLEventListener, KeyListener, MouseListener, Mo
         // update scene for this time step
         myScene.animate(gl, glu, glut);
         // clear the drawing surface
+
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+
         // display model
         gl.glPushMatrix(); {
             myScene.setCamera(gl, glu, glut);
@@ -272,7 +274,7 @@ public class Listener implements GLEventListener, KeyListener, MouseListener, Mo
             glu.gluPickMatrix(pt.x, viewport[3]-pt.y, 5.0f, 5.0f, viewport, 0);
         }
         // view scene in perspective
-        glu.gluPerspective(45.0f, (float)viewport[2]/viewport[3], 0.1f, 50000.0f);
+        glu.gluPerspective(45.0f, (float)viewport[2]/viewport[3], 1f, 50000.0f);
         // prepare to work with model again
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glLoadIdentity();
