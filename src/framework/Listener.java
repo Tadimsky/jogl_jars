@@ -99,7 +99,9 @@ public class Listener implements GLEventListener, KeyListener, MouseListener, Mo
         System.err.println("GL_VERSION: " + gl.glGetString(GL2.GL_VERSION));
         System.err.println("GL_CLASS: " + gl.getClass().getName());
         // set to draw in window based on depth
+        //gl.glClearDepth(1.0f);
         gl.glEnable(GL2.GL_DEPTH_TEST);
+        //gl.glDepthFunc(GL2.GL_LEQUAL);
         // start scene
         myScene.init(gl, glu, glut);
     }
