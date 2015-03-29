@@ -1,5 +1,8 @@
 package framework.ext.camera;
 
+import com.jogamp.opengl.math.Matrix4;
+import com.jogamp.opengl.math.Quaternion;
+import com.jogamp.opengl.math.VectorUtil;
 import framework.ext.math.Point;
 import framework.ext.math.Vector;
 
@@ -11,80 +14,113 @@ import javax.media.opengl.glu.GLU;
  */
 public class Camera {
     private Point myPosition;
-    private Point myLookAt;
+
+    Quaternion myOrientation;
+
+
+    private Vector myLeft;
+    private Vector myFront;
     private Vector myUp;
 
-    private float myRollAmount;
 
     public Camera() {
-        this(new Point(0, 1, 40), new Point(0, 1, 41), Vector.Y_AXIS);
+        this(new Point(0, 1, 40));
     }
     
-    public Camera(Point position){
-        this(position, position.add(new Vector(0, 0, 1)), Vector.Y_AXIS);
-    }
-    
-    public Camera(Point position, Point lookAt, Vector up) {
+    public Camera(Point position) {
+        myOrientation = new Quaternion();
         myPosition = new Point(position);
-        myLookAt = new Point(lookAt);
-        
-        myUp = new Vector(up);
-        myUp.normalize();
+
+        myLeft = new Vector(-1f, 0, 0);
+        myFront = new Vector(0, 0, -1);
+        myUp = new Vector(0, 1, 0);
+    }
+
+    public Vector getView() {
+        Vector front = Vector.Z_AXIS;
+        front = rotateByOrientation(front);
+        front.negate();
+        System.out.println("myFront = " + front);
+        return front;
+
     }
 
     public void apply(GL2 gl, GLU glu) {
-        glu.gluLookAt(myPosition.x, myPosition.y, myPosition.z,
-                myLookAt.x, myLookAt.y, myLookAt.z,
-                myUp.x, myUp.y, myUp.z);
+        //gl.glTranslatef(myPosition.x, myPosition.y, myPosition.z);
+        myOrientation.normalize();
+
+        float[] values = new float[16];
+        Matrix4 m = new Matrix4();
+        m.multMatrix(myOrientation.toMatrix(values, 0));
+
+        m.transpose();
+        m.translate(-myPosition.x, -myPosition.y, -myPosition.z);
+
+        gl.glMultMatrixf(m.getMatrix(), 0);
+
+
     }
-    
+
     public void rotate(float angle, Vector axis) {
-        // Axis-Angle rotation: http://www.gametutorials.com/tutorial/camera-part2-2/
-        Vector viewDir = getViewVector();
-        viewDir.normalize();
-        
-        float radAngle = (float)(angle * Math.PI / 180.0f);
-        
-        float cos = (float)Math.cos(radAngle);
-        float sin = (float)Math.sin(radAngle);
-        
-        Vector newLookAt = new Vector();
-        
-        newLookAt.x = (cos + (1 - cos) * (axis.x  * axis.x)) * viewDir.x;
-        newLookAt.x += (((1 - cos) * axis.x  * axis.y) - (axis.z * sin)) * viewDir.y;
-        newLookAt.x += (((1 - cos) * axis.x  * axis.z) + (axis.y * sin)) * viewDir.z;
-
-        newLookAt.y = (((1 - cos) * axis.x  * axis.y) + (axis.z * sin)) * viewDir.x;
-        newLookAt.y += (cos + ((1 - cos) * axis.y * axis.y)) * viewDir.y;
-        newLookAt.y += (((1 - cos) * axis.y  * axis.z) - (axis.x * sin)) * viewDir.z;
-
-        newLookAt.z = (((1 - cos) * axis.x  * axis.z) - (axis.y * sin)) * viewDir.x;
-        newLookAt.z += ((1 - cos) * axis.y  * axis.z) + (axis.x * sin) * viewDir.y;
-        newLookAt.z += (cos + ((1 - cos) * axis.z * axis.z)) * viewDir.z;
-        
-        myLookAt = myPosition.add(newLookAt);
+        Quaternion q = new Quaternion();
+        q.rotateByAngleNormalAxis((float)Math.toRadians(angle), axis.x, axis.y, axis.z);
+        myOrientation.mult(q);
+        myOrientation.normalize();
     }
     
     public void yaw(float angle) {
-        rotate(angle, myUp);        
+        angle = -(float)Math.toRadians(angle);
+
+        Vector axis = rotateByOrientation(Vector.Y_AXIS);
+        System.out.println("axis = " + axis);
+
+        Quaternion q = new Quaternion();
+        q.rotateByAngleNormalAxis(angle, axis.x, axis.y, axis.z);
+
+        myLeft = rotateByOrientation(myLeft);
+        myFront = rotateByOrientation(myFront);
+
+        myOrientation = q.mult(myOrientation);
+
+        //myOrientation.mult(q);
     }
 
     public void roll(float angle) {
-        //rotate(angle, getViewVector());
+        angle = -(float)Math.toRadians(angle);
+
+        Vector axis = rotateByOrientation(Vector.Z_AXIS);
+
+        Quaternion q = new Quaternion();
+        q.rotateByAngleNormalAxis(angle, axis.x, axis.y, axis.z);
+
+        myLeft = rotateByOrientation(myLeft);
+        myUp = rotateByOrientation(myUp);
+        myOrientation = q.mult(myOrientation);
+        //myOrientation.mult(q);
     }
 
     public void pitch(float angle) {
-        rotate(angle, getPitchVector());
-    }
-    
-    public Vector getViewVector() {
-        return myLookAt.sub(myPosition).normalize();
+        angle = -(float)Math.toRadians(angle);
+
+        Vector axis = rotateByOrientation(Vector.X_AXIS);
+
+        Quaternion q = new Quaternion();
+        q.rotateByAngleNormalAxis(angle, axis.x, axis.y, axis.z);
+
+        myUp = rotateByOrientation(myUp);
+        myFront = rotateByOrientation(myFront);
+        myOrientation = q.mult(myOrientation);
+        //myOrientation.mult(q);
     }
 
-    public Vector getPitchVector() {
-        Vector v = getViewVector();
-        v = v.cross(myUp).normalize();
-        return v;
+    private Vector rotateByOrientation(Vector v) {
+        float[] axis = new float[3];
+        float[] vals = {v.x, v.y, v.z};
+        myOrientation.rotateVector(axis, 0, vals, 0);
+
+        Vector ret = new Vector(axis[0], axis[1], axis[2]);
+        ret.normalize();
+        return ret;
     }
 
     /**
@@ -92,14 +128,9 @@ public class Camera {
      * @param distance The distance to move.
      */
     public void move(float distance) {
-        Vector direction = getViewVector();
-        myPosition.x += direction.x * distance;
-        myPosition.y += direction.y * distance;
-        myPosition.z += direction.z * distance;
-
-        myLookAt.x += direction.x * distance;
-        myLookAt.y += direction.y * distance;
-        myLookAt.z += direction.z * distance;
+        Vector movement = getView();
+        movement.scale(distance);
+        myPosition = myPosition.add(movement);
     }
     
     public Point getPosition() {
