@@ -276,7 +276,7 @@ public class Listener implements GLEventListener, KeyListener, MouseListener, Mo
             glu.gluPickMatrix(pt.x, viewport[3]-pt.y, 5.0f, 5.0f, viewport, 0);
         }
         // view scene in perspective
-        glu.gluPerspective(45.0f, (float)viewport[2]/viewport[3], 1f, 50000.0f);
+        glu.gluPerspective(30.0f, (float)viewport[2]/viewport[3], 1f, 50000.0f);
         // prepare to work with model again
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glLoadIdentity();
