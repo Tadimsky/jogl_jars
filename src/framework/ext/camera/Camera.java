@@ -40,7 +40,6 @@ public class Camera {
         Vector front = Vector.Z_AXIS;
         front = rotateByOrientation(front);
         front.negate();
-        System.out.println("myFront = " + front);
         return front;
 
     }
@@ -72,7 +71,6 @@ public class Camera {
         angle = -(float)Math.toRadians(angle);
 
         Vector axis = rotateByOrientation(Vector.Y_AXIS);
-        System.out.println("axis = " + axis);
 
         Quaternion q = new Quaternion();
         q.rotateByAngleNormalAxis(angle, axis.x, axis.y, axis.z);
