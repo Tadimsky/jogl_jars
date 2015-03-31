@@ -1,10 +1,13 @@
 package framework;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.media.opengl.GL2;
 
@@ -15,14 +18,37 @@ import javax.media.opengl.GL2;
  * @author Robert C. Duvall
  */
 public class Spline implements Iterable<float[]> {
-    private List<float[]> myControlPoints;
+    private List<float[]> myControlPoints = new ArrayList<>();
 
 
     /**
-     * Create curve.
+     * Create empty curve.
      */
-    public Spline () {
-        myControlPoints = new ArrayList<>();
+    public Spline (float[] controlPoints) {
+        // BUGBUG: check that it is a multiple of 3
+        for (int k = 0; k < controlPoints.length; k += 3) {
+            addPoint(controlPoints[k], controlPoints[k+1], controlPoints[k+2]);
+        }
+    }
+
+    /**
+     * Create curve from the control points listed in the given file.
+     */
+    @SuppressWarnings("resource")
+    public Spline (String filename) {
+        try {
+            Scanner input = new Scanner(new File(filename));
+            input.nextLine();  // read starting comment
+            while (input.hasNextLine()) {
+                Scanner line = new Scanner(input.nextLine());
+                addPoint(line.nextFloat(), line.nextFloat(), line.nextFloat());
+            }
+            input.close();
+        } catch (FileNotFoundException e) {
+            // BUGBUG: not the best way to handle this error
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
