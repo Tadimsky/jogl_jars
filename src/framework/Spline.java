@@ -18,7 +18,7 @@ import javax.media.opengl.GL2;
  * @author Robert C. Duvall
  */
 public class Spline implements Iterable<float[]> {
-    private List<float[]> myControlPoints = new ArrayList<>();
+    protected List<float[]> myControlPoints = new ArrayList<>();
 
 
     /**
