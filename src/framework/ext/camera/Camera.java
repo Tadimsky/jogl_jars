@@ -62,7 +62,7 @@ public class Camera {
 
     public void rotate(float angle, Vector axis) {
         Quaternion q = new Quaternion();
-        q.rotateByAngleNormalAxis((float)Math.toRadians(angle), axis.x, axis.y, axis.z);
+        q.rotateByAngleNormalAxis((float) Math.toRadians(angle), axis.x, axis.y, axis.z);
         myOrientation.mult(q);
         myOrientation.normalize();
     }
@@ -133,5 +133,21 @@ public class Camera {
     
     public Point getPosition() {
         return myPosition;
+    }
+
+    public void moveTowards(Point p) {
+
+        Vector diff = p.sub(myPosition);
+        Vector dir = diff.normalize();
+
+        myOrientation = new Quaternion();
+
+        float yaw = (float)Math.toDegrees(Math.atan2(dir.x, -dir.z));
+        float pitch = (float)Math.toDegrees(Math.atan2(dir.z, dir.y));
+        yaw(yaw);
+        //pitch(pitch);
+
+        //move(diff.length());
+        this.myPosition = p;
     }
 }
