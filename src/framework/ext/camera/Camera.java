@@ -135,17 +135,25 @@ public class Camera {
         return myPosition;
     }
 
-    public void moveTowards(Point p) {
+    public void moveTowards(Point p, float[] orientation) {
+        Vector newOr = new Vector(orientation[0], orientation[1], orientation[2]) ;// p.sub(myPosition);
 
-        Vector diff = p.sub(myPosition);
-        Vector dir = diff.normalize();
+        newOr.normalize();
 
-        myOrientation = new Quaternion();
+        float[] v1 = {0, 0, -1};
+        float[] v2 = {newOr.x, newOr.y, newOr.z};
 
-        float yaw = (float)Math.toDegrees(Math.atan2(dir.x, -dir.z));
-        float pitch = (float)Math.toDegrees(Math.atan2(dir.z, dir.y));
-        yaw(yaw);
-        //pitch(pitch);
+        float[] t1 = new float[3];
+        float[] t2 = new float[3];
+
+        //myOrientation = new Quaternion();
+        myOrientation.setFromVectors(v1, v2, t1, t2);
+
+//        Vector cross = p1.cross(p2);
+//
+//        float w = (float)Math.sqrt(p1.lengthSquared() * p2.lengthSquared()) + p1.dot(p2);
+//        myOrientation = new Quaternion(cross.x, cross.y, cross.z, w);
+//        myOrientation.normalize();
 
         //move(diff.length());
         this.myPosition = p;
