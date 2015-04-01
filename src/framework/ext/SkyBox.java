@@ -10,6 +10,7 @@ import framework.ext.math.Point;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -24,6 +25,9 @@ public class SkyBox extends  VisualComponent {
     private float mySize;
     private Point myCenterPosition;
 
+    private int polygonMode;
+    private boolean drawSkybox;
+
     public SkyBox(String[] files, float size) {
         assert files.length == 6;
         myTextureFiles = new File[files.length];
@@ -37,6 +41,8 @@ public class SkyBox extends  VisualComponent {
             myTextureFiles[i] = f;
         }
         mySize = size;
+        polygonMode = GL2.GL_FILL;
+        drawSkybox = true;
     }
 
     public void setCenterPosition(Point p) {
@@ -46,6 +52,10 @@ public class SkyBox extends  VisualComponent {
 
     @Override
     public void display(GL2 gl, GLU glu, GLUT glut) {
+        if (!drawSkybox) {
+            return;
+        }
+
         float x = myCenterPosition.x - mySize / 2;
         float y = myCenterPosition.y - mySize / 2;
         float z = myCenterPosition.z - mySize / 2;
@@ -55,6 +65,8 @@ public class SkyBox extends  VisualComponent {
         float length = mySize;
 
         // draw cube
+        gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, polygonMode);
+
         gl.glDisable(GL2.GL_LIGHTING);
         gl.glDepthMask(false);
         gl.glNormal3f(0, 1, 0);
@@ -101,6 +113,18 @@ public class SkyBox extends  VisualComponent {
 
     @Override
     public void animate(GL2 gl, GLU glu, GLUT glut) {
+
+    }
+
+    public void keyPressed (int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_1:
+                polygonMode = polygonMode == GL2.GL_FILL ? GL2.GL_LINE : GL2.GL_FILL;
+                break;
+            case KeyEvent.VK_2:
+                drawSkybox = !drawSkybox;
+                break;
+        }
 
     }
 
